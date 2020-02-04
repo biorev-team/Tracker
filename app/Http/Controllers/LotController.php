@@ -114,11 +114,22 @@ class LotController extends Controller
     }
     public function updateImpression(Request $request)
     {
-        //
-        $home = Lot::all();
-        $home->impression = $request->input('impression');
-        $home->save();
-        
+        $cdate = date('Y-m-d');
+        $impression = LotAnalytic::where('id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
+        $impressionCount = $click->count();
+        if($impressionCount==0)
+        {
+            $lot=new LotAnalytic;
+            $lot->click=$request->input('click');  
+            $lot->impression=$request->input('impression');
+            $lot->save();
+        }
+        else
+        {
+            $lot=LotAnalytics::find($id);
+            $lot->impression=$request->input('impression');
+            $lot->save();
+        }
     }
 
     /**
