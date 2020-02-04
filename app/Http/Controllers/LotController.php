@@ -73,11 +73,10 @@ class LotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateClick(Request $request)
+    public function updateClick(Request $request, $id)
     {
-        $id =  $request->id;
         $cdate = date('Y-m-d');
-        $click = LotAnalytics::where('lot_id',$id)->whereDate('created_at', '=', $cdate)->get();
+        $click = LotAnalytics::where('lot_id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
         $ClickCount = $click->count();
         if($ClickCount==0)
         {
@@ -116,20 +115,31 @@ class LotController extends Controller
     public function updateImpression(Request $request)
     {
         $cdate = date('Y-m-d');
-        $impression = LotAnalytic::where('id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
+        $click = LotAnalytic::whereDate('created_at', '=', $cdate)->get();
         $impressionCount = $click->count();
+        $totals = Lot::get();
+        $count=$totals->count();
         if($impressionCount==0)
         {
+            foreach($totals as $total)
+            {
             $lot=new LotAnalytic;
+            $lot->lot_id=$total->id;          
             $lot->click=$request->input('click');  
             $lot->impression=$request->input('impression');
             $lot->save();
+            }
+
         }
         else
         {
+            foreach($total as $total)
+            {
             $lot=LotAnalytics::find($id);
+            $lot->lot_id=$total->id;          
             $lot->impression=$request->input('impression');
             $lot->save();
+            }
         }
     }
 
