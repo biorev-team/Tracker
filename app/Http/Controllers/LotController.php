@@ -114,6 +114,7 @@ class LotController extends Controller
     }
     public function updateImpression(Request $request)
     {
+        $id = $request->id;
         $cdate = date('Y-m-d');
         $click = LotAnalytic::whereDate('created_at', '=', $cdate)->get();
         $impressionCount = $click->count();
