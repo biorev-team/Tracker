@@ -1,0 +1,21 @@
+html,body{
+    padding: 0;
+    overflow-x: hidden;
+}
+.wrapper{
+     width: 600px;
+     margin: 0 auto; 
+     padding: 20px;
+ }
+ .st8{
+ opacity:0.7;
+ fill:#D8B08A;
+ }
+ .st10{
+
+   font-size: 7px;
+ }
+ .st0{
+    fill:black ;
+    font-size: 5px;
+}
