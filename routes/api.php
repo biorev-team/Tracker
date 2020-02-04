@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/home','HomeController@getHomes');
-Route::post('/update-home-impression/{id}','HomeController@updateImpression');
-Route::post('/update-home-click/{id}','HomeController@updateClick');
-Route::post('/update-lot-click/{id}','LotController@updateClick');
+Route::post('/update-home-impression','HomeController@updateImpression');
+Route::post('/update-home-click','HomeController@updateClick');
+Route::post('/update-lot-click','LotController@updateClick');
 //Route::post('/update-lot-click','LotController@updateClick');

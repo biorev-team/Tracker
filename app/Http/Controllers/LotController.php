@@ -73,10 +73,11 @@ class LotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateClick(Request $request, $id)
+    public function updateClick(Request $request)
     {
+        $id =  $request->id;
         $cdate = date('Y-m-d');
-        $click = LotAnalytics::where('lot_id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
+        $click = LotAnalytics::where('lot_id',$id)->whereDate('created_at', '=', $cdate)->get();
         $ClickCount = $click->count();
         if($ClickCount==0)
         {
