@@ -59,9 +59,29 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editHome($id)
     {
-        //
+        $lot=Home::find($id);
+        return view('admin.edithome')->with(compact('lot'));
+    }
+
+    public function updateHome(Request $request, $id)
+    {
+        $this->validate($request,['title'=>'required',
+        'price'=>'required','specification'=>'required','bedroom'=>'required',
+        'bathroom'=>'required','garage'=>'required','status'=>'required']);
+        $home=Lot::find($id);
+        $home->title=$request->input('title');
+        $home->specification=$request->input('specification');
+        $home->price=$request->input('price');
+        $home->image=$request->input('image');
+        $home->bedroom=$request->input('bedroom');
+        $home->bathroom=$request->input('bathroom');
+        $home->garage=$request->input('garage');
+        $home->status=$request->input('status');
+        $home->save();
+        return redirect('/admin')->with('success','Lot  Updated');
+    
     }
 
     /**

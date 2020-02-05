@@ -61,9 +61,23 @@ class LotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editLot($id)
     {
-        //
+        $lot=Lot::find($id);
+        return view('admin.editLot')->with(compact('lot'));
+    }
+
+    public function updateLot(Request $request, $id)
+    {
+        $this->validate($request,['title'=>'required',
+        'price'=>'required','status'=>'required']);
+        $lot=Lot::find($id);
+        $lot->title=$request->input('title');
+        $lot->price=$request->input('price');
+        $lot->status=$request->input('status');
+        $lot->save();
+        return redirect('/admin')->with('success','Lot  Updated');
+    
     }
 
     /**
