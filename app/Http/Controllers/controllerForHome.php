@@ -42,8 +42,13 @@ class controllerForHome extends Controller
     {
         $id = $request->id;
         //
-       HomeAnalytics::Where('home_id',$id)->increment('click',1);
+       if(HomeAnalytics::Where('home_id',$id)->increment('click',1)){
         return ["click counted"];
+       }
+        else{
+
+            return ["Id does not exist"];
+        }
 
     }
     // public function updateImpression(Request $request, $id)
@@ -65,6 +70,10 @@ class controllerForHome extends Controller
     $homes = Home::all();
     return response()->json($homes);
   
-}       
+}   
+public function getHomesAnalysis(){
+    $lots = HomeAnalytics::all();
+    return response()->json($lots);
+}    
 
 }

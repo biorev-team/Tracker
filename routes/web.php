@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('index');
 });
-Route::get('/home','HomeController@index');
-Route::get('/lot','LotController@index');
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

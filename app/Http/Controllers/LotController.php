@@ -91,13 +91,14 @@ class LotController extends Controller
     public function updateClick(Request $request)
     {
             $id = $request->id;
-            LotAnalytics::where('lot_id',$id)->increment('click',1);
+            if( LotAnalytics::where('lot_id',$id)->increment('click',1)){
             $homes=Home_Lot_R::where('lot_id',$id)->get();
             foreach($homes as $home)
             {
                 $cdate = date('Y-m-d');
-                $click = HomeAnalytics::where('home_id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
+                $click = HomeAnalytics::where('home_id', '=', $home->home_id)->whereDate('created_at', '=', $cdate)->get();
                 $ClickCount = $click->count();
+                echo ($ClickCount);
                 if($ClickCount==0)
                 {
                     HomeAnalytics::create([
@@ -113,7 +114,14 @@ class LotController extends Controller
                 }
                
             }
-            return ["message"=>"impression counted"];
+            return ["Click counted"];
+
+            }
+            else {
+                return ["Id does not exist"];
+            }
+           
+            
        
     }
     public function updateImpression(Request $request)
@@ -153,4 +161,14 @@ class LotController extends Controller
     {
         //
     }
+    // return Homes infoormation
+ public function getLots(){
+    $lots = Lot::all();
+    return response()->json($lots);
+  
+} 
+public function getLotsAnalysis(){
+    $lots = LotAnalytics::all();
+    return response()->json($lots);
+}             
 }

@@ -17,13 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/home','controllerForHome@getHomes');
-Route::post('/update-home-impression','controllerForHome@updateImpression');
-Route::post('/update-home-click','controllerForHome@updateClick');
-Route::post('/update-lot-click','LotController@updateClick');
-Route::post('/update-lot-impression','LotController@updateImpression');
+Route::get('/lot','LotController@getLots');
+Route::get('/home/analytics','controllerForHome@getHomesAnalysis');
+Route::get('/lot/analytics','LotController@getLotsAnalysis');
+//Route::post('/home/impression','controllerForHome@updateImpression');
+Route::post('/home/click','controllerForHome@updateClick');
+Route::post('/lot/click','LotController@updateClick');
+Route::post('/lot/impression','LotController@updateImpression');
 
 
 // Crud Opereatipns
 
-Route::post('/lot-update','LotController@updateLot');
-Route::post('/home-update','controllerForHome@updateHome');
+Route::post('/lot/update','LotController@updateLot');
+Route::post('/home/update','controllerForHome@updateHome');
