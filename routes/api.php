@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/home','HomeController@getHomes');
-Route::post('/update-home-impression','HomeController@updateImpression');
-Route::post('/update-home-click','HomeController@updateClick');
+Route::get('/home','controllerForHome@getHomes');
+Route::post('/update-home-impression','controllerForHome@updateImpression');
+Route::post('/update-home-click','controllerForHome@updateClick');
 Route::post('/update-lot-click','LotController@updateClick');
 Route::post('/update-lot-impression','LotController@updateImpression');
 
@@ -26,4 +26,4 @@ Route::post('/update-lot-impression','LotController@updateImpression');
 // Crud Opereatipns
 
 Route::post('/lot-update','LotController@updateLot');
-Route::post('/home-update','HomeController@updateHome');
+Route::post('/home-update','controllerForHome@updateHome');
