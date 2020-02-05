@@ -59,18 +59,13 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editHome($id)
+    public function updateHome(Request $request)
     {
-        $lot=Home::find($id);
-        return view('admin.edithome')->with(compact('lot'));
-    }
-
-    public function updateHome(Request $request, $id)
-    {
+        $id = $request->id;
         $this->validate($request,['title'=>'required',
         'price'=>'required','specification'=>'required','bedroom'=>'required',
         'bathroom'=>'required','garage'=>'required','status'=>'required']);
-        $home=Lot::find($id);
+        $home=Home::find($id);
         $home->title=$request->input('title');
         $home->specification=$request->input('specification');
         $home->price=$request->input('price');
@@ -80,7 +75,7 @@ class HomeController extends Controller
         $home->garage=$request->input('garage');
         $home->status=$request->input('status');
         $home->save();
-        return redirect('/admin')->with('success','Lot  Updated');
+        return ["updated successfully"];
     
     }
 
@@ -91,49 +86,27 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateClick(Request $request, $id)
+    public function updateClick(Request $request)
     {
+        $id = $request->id;
         //
-        $cdate = date('Y-m-d');
-        $isExist = HomeAnalytics::where('id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
-        $count = $isExist->count();
-        if($count==0)
-        {
-            $home=new HomeAnalytics;
-            $home->home_id = $id;
-            $home->click=$request->input('click');
-            $home->impression=$request->input('impression');
-            $home->save();
-            return response()->json([
-                "message"=>"clicked counted"
-            ]);
-        }
-        else
-        {
-            $home=HomeAnalytics::find($id);
-            $home->click=$request->input('click');
-            $home->save();
-        }
+       HomeAnalytics::Where('home_id',$id)->increment('click',1);
+        return ["click counted"];
 
     }
-    public function updateImpression(Request $request, $id)
-    {
-        //
-        $cdate = date('Y-m-d');
-        $isExist = HomeAnalytics::where('id',$id)->whereDate('created_at',$cdate)->get();
-        $count = $isExist->count();
-        if ($count>0) {
-            $home = new HomeAnalytics;
-            $home->impression = $request->input('impression');
-            $home->save();
-        }
-        else {
-
-
-        }
-
-        
-    }
+    // public function updateImpression(Request $request, $id)
+    // {
+    //     //
+    //     $cdate = date('Y-m-d');
+    //     $isExist = HomeAnalytics::where('id',$id)->whereDate('created_at',$cdate)->get();
+    //     $count = $isExist->count();
+    //     if ($count>0) {
+    //         $home = new HomeAnalytics;
+    //         $home->impression = $request->input('impression');
+    //         $home->save();
+    //     }
+    //     else {}
+    // }
 
     /**
      * Remove the specified resource from storage.

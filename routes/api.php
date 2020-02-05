@@ -21,7 +21,9 @@ Route::post('/update-home-impression','HomeController@updateImpression');
 Route::post('/update-home-click','HomeController@updateClick');
 Route::post('/update-lot-click','LotController@updateClick');
 Route::post('/update-lot-impression','LotController@updateImpression');
-Route::get('/admin/lot/edit/{id}','LotController@editLot');
-Route::post('/admin/lot/update/{id}','LotController@updateLot');
-Route::get('/admin/home/edit/{id}','HomeController@editHome');
-Route::post('/admin/home/update/{id}','HomeController@updatehome');
+
+
+// Crud Opereatipns
+
+Route::post('/lot-update','LotController@updateLot');
+Route::post('/home-update','HomeController@updateHome');

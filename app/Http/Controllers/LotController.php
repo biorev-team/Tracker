@@ -61,14 +61,15 @@ class LotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editLot($id)
-    {
-        $lot=Lot::find($id);
-        return view('admin.editLot')->with(compact('lot'));
-    }
+    // public function editLot($id)
+    // {
+    //     $lot=Lot::find($id);
+    //     return view('admin.editLot')->with(compact('lot'));
+    // }
 
-    public function updateLot(Request $request, $id)
+    public function updateLot(Request $request)
     {
+        $id = $request->id;
         $this->validate($request,['title'=>'required',
         'price'=>'required','status'=>'required']);
         $lot=Lot::find($id);
@@ -76,7 +77,7 @@ class LotController extends Controller
         $lot->price=$request->input('price');
         $lot->status=$request->input('status');
         $lot->save();
-        return redirect('/admin')->with('success','Lot  Updated');
+        return ["updated successfully"];
     
     }
 
@@ -86,44 +87,33 @@ class LotController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function updateClick(Request $request, $id)
+     */ 
+    public function updateClick(Request $request)
     {
-        $cdate = date('Y-m-d');
-        $click = LotAnalytics::where('lot_id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
-        $ClickCount = $click->count();
-        if($ClickCount==0)
-        {
-            $lot=new LotAnalytics;
-            $lot->click=$request->input('click');
-            $lot->lot_id=$id;
-            $lot->impression=$request->input('impression');
-            $lot->save();
+            $id = $request->id;
+            LotAnalytics::where('lot_id',$id)->increment('click',1);
             $homes=Home_Lot_R::where('lot_id',$id)->get();
             foreach($homes as $home)
             {
-            $home =new HomeAnalytics;
-            $home->home_id=$home->home_id;
-            $home->click=$request->input('click');
-            $home->impression=$request->input('impression');
-            $home->save();
+                $cdate = date('Y-m-d');
+                $click = HomeAnalytics::where('home_id', '=', $id)->whereDate('created_at', '=', $cdate)->get();
+                $ClickCount = $click->count();
+                if($ClickCount==0)
+                {
+                    HomeAnalytics::create([
+                        'home_id'=>$home->home_id,
+                        'impression'=>1,
+                        'click' =>0 
+                    ]);
+                }
+                else
+                {
+                    HomeAnalytics::where('home_id',$home->home_id)->increment('impression',1);
+
+                }
+               
             }
-    
-        }
-        else
-        {
-            $lot=LotAnalytics::find($id);
-            $lot->click=$request->input('click');
-            $lot->save();
-            $homes=Home_Lot_R::where('lot_id',$id)->with('home')->get();
-            foreach($homes as $home)
-            {
-            $home =HomeAnalytics::find($home->home_id);
-            $home->home_id=$home->home_id;
-            $home->impression=$request->input('impression');
-            $home->save();
-            }
-        }
+            return ["message"=>"impression counted"];
        
     }
     public function updateImpression(Request $request)
