@@ -65,17 +65,36 @@ class HomeController extends Controller
         $this->validate($request,['title'=>'required',
         'price'=>'required','specification'=>'required','bedroom'=>'required',
         'bathroom'=>'required','garage'=>'required','status'=>'required']);
-        $home=Home::find($id);
-        $home->title=$request->input('title');
-        $home->specification=$request->input('specification');
-        $home->price=$request->input('price');
-        $home->image=$request->input('image');
-        $home->bedroom=$request->input('bedroom');
-        $home->bathroom=$request->input('bathroom');
-        $home->garage=$request->input('garage');
-        $home->status=$request->input('status');
-        $home->save();
-        return ["updated successfully"];
+        if($request->hasFile('image'))
+        {
+            $home=Home::find($id);
+            $FileName=$request->file('image');
+            $imagename = $FileName->getClientOriginalName();
+            $destinationpath = public_path('/img');
+            $uploadStatus = $FileName->move($destinationpath,$imagename);      
+            $home->title=$request->input('title');
+            $home->specification=$request->input('specification');
+            $home->price=$request->input('price');
+            $home->image=$imagename; 
+            $home->bedroom=$request->input('bedroom');
+            $home->bathroom=$request->input('bathroom');
+            $home->garage=$request->input('garage');
+            $home->status=$request->input('status');
+            $home->save();
+            return ["updated successfully"];
+        }
+        else
+        {
+            $home=Home::find($id);     
+            $home->title=$request->input('title');
+            $home->specification=$request->input('specification');
+            $home->price=$request->input('price');
+            $home->bedroom=$request->input('bedroom');
+            $home->bathroom=$request->input('bathroom');
+            $home->garage=$request->input('garage');
+            $home->status=$request->input('status');
+            $home->save();
+        }
     
     }
 
