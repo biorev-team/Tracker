@@ -16,7 +16,7 @@ class CreateLotAnalyticsTable extends Migration
         Schema::create('lot_analytics', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('lot_id');
-                $table->bigInteger('impression')->unsigned();
+                $table->bigIncrement('impression')->unsigned();
                 $table->bigInteger('click')->unsigned();
                 $table->timestamps();
         });

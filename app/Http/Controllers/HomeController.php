@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use DB;
 use App\Models\HomeAnalytics;
+use App\Models\Home;
 class HomeController extends Controller
 {
     /**

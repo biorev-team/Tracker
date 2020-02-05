@@ -20,4 +20,4 @@ Route::get('/home','HomeController@getHomes');
 Route::post('/update-home-impression','HomeController@updateImpression');
 Route::post('/update-home-click','HomeController@updateClick');
 Route::post('/update-lot-click','LotController@updateClick');
-Route::post('/update-lot-click','LotController@updateImpression');
+Route::post('/update-lot-impression','LotController@updateImpression');
